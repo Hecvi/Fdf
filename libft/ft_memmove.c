@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klaurine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/14 19:30:50 by klaurine          #+#    #+#             */
-/*   Updated: 2019/05/16 20:20:59 by klaurine         ###   ########.fr       */
+/*   Created: 2019/04/18 20:26:40 by lseema            #+#    #+#             */
+/*   Updated: 2019/05/26 21:16:10 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,24 @@
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	size_t					i;
-	unsigned char			*dest;
-	const unsigned char		*source;
+	size_t			i;
+	unsigned char	*p_dst;
+	unsigned char	*p_src;
 
+	p_dst = (unsigned char *)dst;
+	p_src = (unsigned char *)src;
 	i = 0;
-	dest = (unsigned char *)dst;
-	source = (const unsigned char *)src;
-	if (dest == NULL && source == NULL)
-		return (NULL);
-	else if (source >= dest || dest >= (source + len))
-	{
-		while (i < len)
-		{
-			dest[i] = source[i];
-			i++;
-		}
-	}
+	if ((!dst) && (!src))
+		return (dst);
+	if (src >= dst)
+		while (len--)
+			*p_dst++ = *p_src++;
 	else
-		while (i < len)
-		{
-			dest[len - 1] = source[len - 1];
-			len--;
-		}
+	{
+		p_dst = p_dst + len - 1;
+		p_src = p_src + len - 1;
+		while (len--)
+			*p_dst-- = *p_src--;
+	}
 	return (dst);
 }

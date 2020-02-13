@@ -3,96 +3,73 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klaurine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/26 21:12:37 by klaurine          #+#    #+#             */
-/*   Updated: 2019/05/10 20:48:31 by klaurine         ###   ########.fr       */
+/*   Created: 2019/04/25 19:13:41 by lseema            #+#    #+#             */
+/*   Updated: 2020/01/31 19:36:36 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_words(char const *s, char c)
+static int	ft_num_words(char const *str, char c)
 {
 	int i;
-	int j;
+	int words;
 
+	words = 0;
 	i = 0;
-	j = 0;
-	if (s[i] != c)
+	while (str[i])
 	{
-		i++;
-		j++;
+		while (str[i] == c && str[i] != '\0')
+			i++;
+		if (str[i])
+			words++;
+		while (str[i] != c && str[i] != '\0')
+			i++;
 	}
-	while (s[i])
+	return (words);
+}
+
+static int	ft_splitstr(char **arr, const char *s, char d, size_t len)
+{
+	size_t	j;
+	size_t	count;
+	size_t	wlen;
+
+	count = 0;
+	j = 0;
+	while (count < len)
 	{
-		if (s[i] == c && s[i + 1] != c && s[i + 1])
+		wlen = 0;
+		while (s[j] == d && s[j])
 			j++;
-		i++;
-	}
-	return (j);
-}
-
-static char		*ft_return(char const *s, int i, char c)
-{
-	int		j;
-	char	*str;
-
-	j = i;
-	while (s[j] != c && s[j])
-		j++;
-	if (!(str = (char *)malloc(sizeof(char) * (j - i + 1))))
-		return (NULL);
-	j = 0;
-	while (s[i] && s[i] != c)
-	{
-		str[j] = s[i];
-		i++;
-		j++;
-	}
-	str[j] = '\0';
-	return (str);
-}
-
-static void		ft_free(char **array, int number)
-{
-	int i;
-
-	i = 0;
-	while (i < number)
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-	array = NULL;
-}
-
-char			**ft_strsplit(char const *s, char c)
-{
-	int		i;
-	int		j;
-	char	**array;
-
-	i = 0;
-	j = 0;
-	if (!s || !(array = (char **)malloc(sizeof(char *) * (ft_words(s, c) + 1))))
-		return (NULL);
-	while (s[i])
-	{
-		if (s[i] != c)
+		while (s[j] != d && s[j])
 		{
-			if (!(array[j] = ft_return(s, i, c)))
-			{
-				ft_free(array, j);
-				return (NULL);
-			}
+			wlen++;
 			j++;
-			while (s[i] != c && s[i + 1])
-				i++;
 		}
-		i++;
+		if (!(arr[count] = ft_strsub(&s[j - wlen], 0, wlen)))
+			return (0);
+		count++;
 	}
-	array[j] = NULL;
-	return (array);
+	arr[count] = NULL;
+	return (1);
+}
+
+char		**ft_strsplit(char const *str, char c)
+{
+	size_t	l;
+	char	**arr;
+
+	if (!str)
+		return (NULL);
+	l = ft_num_words(str, c);
+	if (!(arr = ((char **)ft_memalloc(sizeof(char *) * (l + 1)))))
+		return (NULL);
+	if (ft_splitstr(arr, str, c, l))
+		return (arr);
+	else
+		ft_memdel((void **)arr);
+	return (arr);
 }

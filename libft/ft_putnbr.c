@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klaurine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/24 16:49:44 by klaurine          #+#    #+#             */
-/*   Updated: 2019/04/24 21:59:41 by klaurine         ###   ########.fr       */
+/*   Created: 2019/04/25 17:23:25 by lseema            #+#    #+#             */
+/*   Updated: 2020/01/25 18:07:09 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,25 @@
 
 void	ft_putnbr(int n)
 {
-	if (n > 2147483647 || n < -2147483648)
-		return ;
-	else if (n == -2147483648)
+	size_t i;
+
+	if (n < 0)
 	{
-		ft_putchar('-');
-		ft_putchar('2');
-		ft_putnbr(147483648);
-	}
-	else if (n < 0)
-	{
-		ft_putchar('-');
-		ft_putnbr(-n);
-	}
-	else if (n > 9)
-	{
-		ft_putnbr(n / 10);
-		ft_putnbr(n % 10);
+		if (n == -2147483648)
+		{
+			write(1, "-2147483648", 11);
+			return ;
+		}
+		i = (n * -1);
+		write(1, "-", 1);
 	}
 	else
-		ft_putchar(n + 48);
+		i = n;
+	if (i > 9)
+	{
+		ft_putnbr(i / 10);
+		ft_putchar((i % 10) + '0');
+	}
+	else
+		ft_putchar(i + '0');
 }

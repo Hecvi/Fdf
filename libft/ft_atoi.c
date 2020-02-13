@@ -3,46 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klaurine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/22 18:26:29 by klaurine          #+#    #+#             */
-/*   Updated: 2019/08/21 20:04:31 by klaurine         ###   ########.fr       */
+/*   Created: 2019/04/11 16:36:50 by lseema            #+#    #+#             */
+/*   Updated: 2019/05/27 20:56:48 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		isspace(int c)
+static int	next_sym(const char *str, size_t i)
 {
-	if (c == '\n' || c == '\t' || c == '\v' || c == '\f' || c == '\r'
-			|| c == ' ')
-		return (1);
-	return (0);
+	while ((str[i] == ' ') || (str[i] == '\n') || (str[i] == '\t')
+			|| (str[i] == '\r') || (str[i] == '\f') || (str[i] == '\v'))
+		i++;
+	return (i);
 }
 
-int				ft_atoi(const char *str)
+int			ft_atoi(const char *str)
 {
-	int						i;
-	int						sign;
-	unsigned long long int	number;
+	size_t	i;
+	size_t	res;
+	size_t	gr;
+	int		flag;
 
-	i = 0;
-	sign = 1;
-	number = 0;
-	while (isspace(str[i]))
-		i++;
-	if (str[i] == '-')
-		sign = -1;
-	if (str[i] == '-' || str[i] == '+')
-		i++;
-	while (str[i] && str[i] >= '0' && str[i] <= '9')
+	res = 0;
+	flag = 1;
+	gr = 9223372036854775807 / 10;
+	i = next_sym(str, 0);
+	if ((str[i] == '+') || (str[i] == '-'))
 	{
-		number = number * 10 + (str[i] - '0');
-		if (number > ATOI_MAX && sign == 1)
-			return (-1);
-		else if ((number + 1) > ATOI_MAX && sign == -1)
-			return (0);
+		if (str[i] == '-')
+			flag = -1;
 		i++;
 	}
-	return ((int)number * sign);
+	while (str[i] != '\0' && str[i] >= '0' && str[i] <= '9')
+	{
+		if ((res > gr || (res == gr && (str[i] - '0') > 7)) && flag == 1)
+			return (-1);
+		else if ((res > gr || (res == gr && (str[i] - '0') > 8)) && flag == -1)
+			return (0);
+		res = (res * 10) + (long long int)(str[i++] - '0');
+	}
+	return (res * flag);
 }

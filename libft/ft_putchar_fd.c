@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: klaurine <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lseema <lseema@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/24 19:30:03 by klaurine          #+#    #+#             */
-/*   Updated: 2019/05/12 14:52:33 by klaurine         ###   ########.fr       */
+/*   Created: 2019/04/25 18:41:27 by lseema            #+#    #+#             */
+/*   Updated: 2020/01/25 18:07:01 by lseema           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,5 @@
 
 void	ft_putchar_fd(char c, int fd)
 {
-	if (fd < 0 || fd > FD_MAX)
-		return ;
 	write(fd, &c, 1);
 }
